@@ -41,6 +41,6 @@ foreach ($user in $users) {
     -Enabled $true `
     -AccountPassword (ConvertTo-SecureString -AsPlainText $password -Force) `
     -ChangePasswordAtLogon $true `
-    | Move-ADObject -TargetPath "CN='$firstName $lastName',OU=$ou,OU=SunFlow,DC=corp,DC=globex,DC-com"
+    | Move-ADObject -TargetPath "CN='$firstName $lastName',OU=$ou,OU=SunFlow,DC=corp,DC=globex,DC=com"
 }
 # End
