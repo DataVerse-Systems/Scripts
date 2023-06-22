@@ -3,7 +3,7 @@
 # Date of latest revision:      06/21/2023
 # Purpose:                      Create new user(s) in Active Directory (AD) from CSV file.
 
-# Run this Scripts In PowershellISE as administrator.
+# Run this Script In PowershellISE as administrator.
 # This script imports a .csv file, reads each line independently, checks the potential user against users in Active Directory.
 # If the user already exists they are skipped and the script moves on to the next.
 # If the user does not exist in Active Directory they are added to AD and moved to their Department Organizational Unit.
