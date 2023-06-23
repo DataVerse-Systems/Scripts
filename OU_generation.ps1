@@ -11,7 +11,7 @@
 # Set the domain name
 $domain = "corp.globex.com"
 # Parent OU 
-$parentOUName = "ParentOU"
+$parentOUName = "TestOU"
 # Child OU name
 $childOUName = @("ChildOU1","ChildOU2","ChildOU3","ChildOU4")
 # Distinguished name  of parent OU
@@ -21,26 +21,24 @@ $childOUDN = "OU=$childOUName,$parentOUDN"
 
 # Main
 # Create parent OU
-New-ADOrganizationalUnit -Name $parentOUName -Path "DC=corp,DC=globex,DC=com"
+New-ADOrganizationalUnit -Name $parentOUName -Path "DC=corp,DC=globex,DC=com" -ProtectedFromAccidentalDeletion $false
+# Verify parent OU is created successfully
+$parentOU = Get-ADOrganizationalUnit -Filter { Name -eq $parentOUName }
+if ($parentOU -ne $null) {
+        Write-Host "Parent OU '$parentOUName' created successfully."
+    } else {
+        Write-Host "Failed to create parent OU '$parentOUName'."
+    }
 
 # Create child OUs
 foreach ($child in $childOUName) {
-    New-ADOrganizationalUnit -Name $childOUName -Path $parentOUDN
-}
-
-# Verify OUs are created successfully
-$parentOU = Get-ADOrganizationalUnit -Filter { Name -eq $parentOUName }
-$childOU = Get-ADOrganizationalUnit -Filter { Name -eq $childOUName }
-
-if ($parentOU -ne $null) {
-    Write-Host "Parent OU '$parentOUName' created successfully."
-} else {
-    Write-Host "Failed to create parent OU '$parentOUName'."
-}
-
-if ($childOU -ne $null) {
-    Write-Host "Child OU '$childOUName' created successfully."
-} else {
-    Write-Host "Failed to create child OU '$childOUName'."
+    New-ADOrganizationalUnit -Name $child -Path $parentOUDN -ProtectedFromAccidentalDeletion $false
+    # Verify child OUs are created successfully    
+    $childOU = Get-ADOrganizationalUnit -Filter { Name -eq $child }
+    if ($childOU -ne $null) {
+        Write-Host "Child OU '$child' created successfully."
+    } else {
+        Write-Host "Failed to create child OU '$child'."
+    }
 }
 # End
