@@ -21,7 +21,7 @@ $childOUDN = "OU=$childOUName,$parentOUDN"
 
 # Main
 # Create parent OU
-New-ADOrganizationalUnit -Name $parentOUName -Path "DC=corp,DC=globex,DC=com" -ProtectedFromAccidentalDeletion $false
+New-ADOrganizationalUnit -Name $parentOUName -Path "DC=corp,DC=globex,DC=com"
 # Verify parent OU is created successfully
 $parentOU = Get-ADOrganizationalUnit -Filter { Name -eq $parentOUName }
 if ($parentOU -ne $null) {
@@ -32,7 +32,7 @@ if ($parentOU -ne $null) {
 
 # Create child OUs
 foreach ($child in $childOUName) {
-    New-ADOrganizationalUnit -Name $child -Path $parentOUDN -ProtectedFromAccidentalDeletion $false
+    New-ADOrganizationalUnit -Name $child -Path $parentOUDN
     # Verify child OUs are created successfully    
     $childOU = Get-ADOrganizationalUnit -Filter { Name -eq $child }
     if ($childOU -ne $null) {
