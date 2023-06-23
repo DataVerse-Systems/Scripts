@@ -9,8 +9,11 @@
 # If the user does not exist in Active Directory they are added to AD and moved to their Department Organizational Unit.
 
 # Main
-# Path to CSV file - replace <path to .csv file> with actual path to .csv file
-$csvPath = <path to .csv file>
+# Import the Active Directory module
+Import-Module ActiveDirectory
+
+# Path to CSV file
+$csvPath = "C:\Users\Administrator\Documents\SunFlow_Org_Chart.csv.txt"
 
 # Import CSV File
 $users = Import-Csv -Path $csvPath
@@ -29,7 +32,7 @@ foreach ($user in $users) {
     if (Get-ADUser -Filter {SamAccountName -eq $userName}) {
         Write-Host "User '$userName' already exists in Active Directory. Skipping"
         continue
-    }    
+    }
 
     # Create user in AD
     New-ADUser `
@@ -40,7 +43,17 @@ foreach ($user in $users) {
     -Email "$userName@corp.globex.com" `
     -Enabled $true `
     -AccountPassword (ConvertTo-SecureString -AsPlainText $password -Force) `
-    -ChangePasswordAtLogon $true `
-    | Move-ADObject -TargetPath "CN='$firstName $lastName',OU=$ou,OU=SunFlow,DC=corp,DC=globex,DC=com"
+    -ChangePasswordAtLogon $true
+    
+    # Get user distinguished name
+    $userDN = (Get-ADUser -Filter {SamAccountName -eq $userName}).distinguishedName
+    
+    # Move user to child OU
+    Move-ADObject `
+    -Identity $userDN `
+    -TargetPath "OU=$ou,OU=SunFlow,DC=corp,DC=globex,DC=com" `
+    -Server "corp.globex.com"
+
+
 }
 # End
