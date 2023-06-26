@@ -6,3 +6,5 @@ This repository contains any and all scripts used by DataVerse Solutions to:
 [Organizational Unit Generation](https://github.com/DataVerse-Systems/Scripts/blob/main/OU_generation.ps1)
 
 [Import Active Directory Users](https://github.com/DataVerse-Systems/Scripts/blob/main/import_users_to_AD.)
+
+[Remove Active Directory Users](https://github.com/DataVerse-Systems/Scripts/blob/main/reomve_users_from_AD.ps1)
